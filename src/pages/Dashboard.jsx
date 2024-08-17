@@ -6,31 +6,23 @@ import { IoIosNotifications } from "react-icons/io";
 import { Link } from "react-router-dom";
 import ProfileCard from "../components/ProfileCard";
 import VisitedLocations from "../components/VisitedLocations";
-import CarSmallCard from "../components/CarSmallCard";
+import PopularNearByCars from "../components/PopularNearByCars";
+import CategoryCard from "../components/CategoryCard";
+import sedanImage from "../assets/sedan.png";
+import suvImage from "../assets/suv.png";
+import muvImage from "../assets/muv.png";
+import hatchBachImage from "../assets/hatchback.png";
+import CarCard from "../components/CarCard";
 
 function Dashboard() {
   return (
     <Container>
       <Row>
-        <Col
-          xs={6}
-          className="d-flex align-items-center justify-content-center"
-        >
-          <Link to="/my-cars" className="fs-6 fw-bold">
-            My Cars
-          </Link>
-        </Col>
-        <Col
-          xs={6}
-          className="d-flex align-items-center justify-content-center"
-        >
-          <Link to="/notifications" className="fs-6 fw-bold">
-            <IoIosNotifications />
-            Notifications
-          </Link>
-        </Col>
         <Col xs={12} className="p-4">
-          <div className="d-flex flex-column  align-items-start justify-content-center bg-light p-4 rounded">
+          <div
+            className="d-flex flex-column  align-items-start justify-content-center bg-light p-4"
+            style={{ borderRadius: "15px" }}
+          >
             <div className="d-flex align-items-center justify-content-between w-100">
               <span> NEAREST CAR </span>
               <span className="fs-6 d-flex align-items-center justify-content-center gap-2">
@@ -69,7 +61,43 @@ function Dashboard() {
           <VisitedLocations />
         </Col>
         <Col xs={12} className="p-4">
-          <CarSmallCard />
+          <PopularNearByCars />
+        </Col>
+        <Col xs={12} className="p-4">
+          <h4 className="fw-bold opacity-25 fs-2">Search By Categories</h4>
+          <Row>
+            {[
+              {
+                name: "HatchBack",
+                icon: hatchBachImage,
+              },
+              {
+                name: "Sedan",
+                icon: sedanImage,
+              },
+              {
+                name: "SUV",
+                icon: suvImage,
+              },
+              {
+                name: "MUV",
+                icon: muvImage,
+              },
+            ].map((item, index) => (
+              <Col key={index} xs={3}>
+                <CategoryCard key={index} {...item} />
+              </Col>
+            ))}
+          </Row>
+        </Col>
+        <Col xs={12} className="p-4">
+          <Row>
+            {[1, 2, 3, 4].map((item, index) => (
+              <Col xs={6} key={index}>
+                <CarCard />
+              </Col>
+            ))}
+          </Row>
         </Col>
       </Row>
     </Container>

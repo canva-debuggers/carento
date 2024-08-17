@@ -3,7 +3,12 @@ import { BsStarFill } from "react-icons/bs";
 
 function ProfileCard() {
   return (
-    <div className="bg-light rounded p-3 d-flex align-items-center flex-column">
+    <div
+      className="bg-light  p-3 d-flex align-items-center flex-column"
+      style={{
+        borderRadius: "15px",
+      }}
+    >
       <img
         src="https://i.pinimg.com/236x/8b/84/6f/8b846fefdc265bc26e7480e7ddc01225.jpg"
         alt=""
