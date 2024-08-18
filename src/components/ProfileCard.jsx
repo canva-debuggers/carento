@@ -4,6 +4,7 @@ import { AccountContext } from "../context/AccountProvider";
 import { Button } from "react-bootstrap";
 import RentMyCarModal from "./RentMyCarModal";
 import default_profile from "../assets/default_profile.jpg";
+import BookingModal from "./BookingModal";
 
 function ProfileCard() {
   const { user } = useContext(AccountContext);
@@ -34,7 +35,7 @@ function ProfileCard() {
       <Button variant="outline-dark" className="mt-3" size="sm">
         Rent My Car
       </Button>
-      <RentMyCarModal show={false} />
+      <BookingModal show={false} />
     </div>
   );
 }
