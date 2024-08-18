@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { FaGasPump, FaLocationArrow } from "react-icons/fa";
 import { FaRegCircleDot } from "react-icons/fa6";
@@ -13,8 +13,19 @@ import suvImage from "../assets/suv.png";
 import muvImage from "../assets/muv.png";
 import hatchBachImage from "../assets/hatchback.png";
 import CarCard from "../components/CarCard";
+import { getDataFromCollection } from "../queries/queries";
+import notFound from "../assets/notfound.png";
 
 function Dashboard() {
+  const [carList, setCarList] = useState([]);
+  const [filteredCars, setFilteredCars] = useState(carList);
+
+  useEffect(() => {
+    getDataFromCollection("cars").then((data) => {
+      setCarList(data);
+      setFilteredCars(data);
+    });
+  }, []);
   return (
     <Container>
       <Row>
@@ -102,34 +113,53 @@ function Dashboard() {
             {[
               {
                 name: "HatchBack",
+                key: "hatchback",
                 icon: hatchBachImage,
               },
               {
                 name: "Sedan",
+                key: "sedan",
                 icon: sedanImage,
               },
               {
                 name: "SUV",
+                key: "suv",
                 icon: suvImage,
               },
               {
                 name: "MUV",
+                key: "muv",
                 icon: muvImage,
               },
             ].map((item, index) => (
               <Col key={index} xs={3}>
-                <CategoryCard key={index} {...item} />
+                <CategoryCard
+                  key={index}
+                  {...item}
+                  onClick={() =>
+                    setFilteredCars(
+                      carList.filter((_item) => _item.type === item.key)
+                    )
+                  }
+                />
               </Col>
             ))}
           </Row>
         </Col>
         <Col xs={12} className="p-4">
           <Row>
-            {[1, 2, 3, 4].map((item, index) => (
-              <Col xs={6} md={3} key={index}>
-                <CarCard />
-              </Col>
-            ))}
+            {filteredCars && filteredCars.length > 0 ? (
+              filteredCars.map((item, index) => (
+                <Col xs={6} md={3} key={index}>
+                  <CarCard {...item} key={index} />
+                </Col>
+              ))
+            ) : (
+              <div className="d-flex flex-column align-items-center justify-content-center">
+                <img src={notFound} className="img-fluid" alt="" />
+                No data found
+              </div>
+            )}
           </Row>
         </Col>
       </Row>

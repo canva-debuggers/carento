@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, ButtonGroup, Col, Container, Row } from "react-bootstrap";
 import MapContainer from "../components/MapContainer";
 import { FaArrowLeft, FaGasPump, FaLocationArrow } from "react-icons/fa";
@@ -7,36 +7,44 @@ import { PiSeat } from "react-icons/pi";
 import { BsSpeedometer } from "react-icons/bs";
 import { BiCross } from "react-icons/bi";
 import { FiArrowLeftCircle } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { isMobile } from "react-device-detect";
+import { getDataFromCollection } from "../queries/queries";
+import BookingModal from "../components/BookingModal";
 
 function Details() {
+  const [carDetails, setCarDetails] = useState({});
   const [isOpen, setOpen] = useState(true);
   const ref = useRef();
   const navigate = useNavigate();
+  const { id } = useParams();
+  useEffect(() => {
+    if (id) {
+      getDataFromCollection("cars", id).then((data) => {
+        console.log("data", data);
+        setCarDetails(data);
+      });
+    }
+  }, [id]);
   return (
     <Container fluid className="p-0">
       <Row className="g-0">
-        <Col xs={12} md={6}>
-          <div className="map-container">
-            <MapContainer
-              center={{
-                lat: 22.572645,
-                lng: 88.363892,
-              }}
-            />
-            {isMobile && (
-              <div
-                className="position-absolute top-0 w-100 p-3"
-                style={{
-                  background:
-                    "linear-gradient(to bottom, white 40%, rgba(255, 255, 255, 0))",
-                }}
-                onClick={() => navigate(-1)}
-              >
-                <FaArrowLeft fontSize={"20px"} />
-              </div>
-            )}
+        <Col xs={12} md={6} className="map-container">
+          <MapContainer
+            center={{
+              lat: 22.572645,
+              lng: 88.363892,
+            }}
+          />
+          <div
+            className="d-block d-md-none position-absolute top-0 w-100 p-3"
+            style={{
+              background:
+                "linear-gradient(to bottom, white 40%, rgba(255, 255, 255, 0))",
+            }}
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft fontSize={"20px"} />
           </div>
         </Col>
         <Col
@@ -147,9 +155,11 @@ function Details() {
                     <div className="d-flex align-items-center justify-content-center w-100 mt-3">
                       <ButtonGroup>
                         <Button variant="outline-dark" size="lg">
+                          <BookingModal show={true} selfDrive={true} />
                           Rent Car
                         </Button>
                         <Button variant="dark" size="md">
+                          <BookingModal show={true} selfDrive={false} />
                           Rent with chauffeur
                         </Button>
                       </ButtonGroup>
