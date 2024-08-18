@@ -1,6 +1,8 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import "firebase/compat/storage";
+
 import * as geofirestore from "geofirestore";
 import { GeoPoint } from "firebase/firestore";
 
@@ -177,7 +179,7 @@ export async function getDataFromCollection(collectionName, id = null) {
 }
 
 export async function getDataFromCollectionByGeo(collectionName, center) {
-  const radius = 5000000; // in kilometers
+  const radius = 50; // in kilometers
 
   try {
     const db = firebase.firestore();
@@ -210,8 +212,6 @@ export async function getDataFromCollectionByGeo(collectionName, center) {
 }
 
 export async function getDataFromCollectionaddGeo(collectionName, jsonData) {
-  const radius = 5000000; // in kilometers
-
   try {
     const db = firebase.firestore();
     const geoDB = geofirestore.initializeApp(db);

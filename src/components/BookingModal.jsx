@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import RenderField from "./RenderField";
 import { useFormik } from "formik";
@@ -8,8 +8,10 @@ import {
 } from "../queries/queries";
 import { GeoPoint } from "firebase/firestore";
 import { useParams } from "react-router-dom";
+import Razorpaycheckout from "./Razorpaycheckout";
 
 function BookingModal({ show, selfDrive, setShow }) {
+  const [showPayment, setShowPayment] = useState(false);
   let { id } = useParams();
   console.log("id", id);
   const formik = useFormik({
@@ -22,8 +24,8 @@ function BookingModal({ show, selfDrive, setShow }) {
     },
     onSubmit: async (values) => {
       try {
-        console.log(values);
         await storeJsonInCollection("bookings", values, id);
+        setShowPayment(true);
       } catch (e) {
         console.log(e);
       }
@@ -74,7 +76,7 @@ function BookingModal({ show, selfDrive, setShow }) {
   ];
 
   return (
-    <Modal show={show} size="lg" style={{ zIndex: 99999999 }}>
+    <Modal show={show} size="lg" style={{ zIndex: 99999999 }} centered>
       <Modal.Header closeButton onClick={() => setShow(false)}>
         <Modal.Title>Rent Car</Modal.Title>
       </Modal.Header>
@@ -106,9 +108,20 @@ function BookingModal({ show, selfDrive, setShow }) {
               setFieldValue={setFieldValue}
             />
           )}
-          <Button type="submit">Book</Button>
+          <div class="d-flex align-items-center justify-cotnten-end">
+            <Button
+              variant="dark"
+              size="lg"
+              type="submit"
+              className="my-4 ms-auto"
+            >
+              Book
+            </Button>
+          </div>
         </Form>
       </Modal.Body>
+
+      {showPayment && <Razorpaycheckout />}
     </Modal>
   );
 }
