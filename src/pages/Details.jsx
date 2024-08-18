@@ -1,10 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, ButtonGroup, Col, Container, Row } from "react-bootstrap";
 import MapContainer from "../components/MapContainer";
-import { FaArrowLeft, FaGasPump, FaLocationArrow } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaCarCrash,
+  FaGasPump,
+  FaLocationArrow,
+  FaRegSun,
+} from "react-icons/fa";
 import { Sheet } from "react-modal-sheet";
-import { PiSeat } from "react-icons/pi";
-import { BsSpeedometer } from "react-icons/bs";
+import { PiSeat, PiSteeringWheelDuotone } from "react-icons/pi";
+import { BsBoxArrowInDown, BsSpeedometer } from "react-icons/bs";
 import { BiCross } from "react-icons/bi";
 import { FiArrowLeftCircle } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
@@ -45,6 +51,10 @@ function Details() {
     km_driven,
     features,
     pickup_location,
+    sun_roof,
+    road_side_assistance,
+    power_windows,
+    power_steering,
   } = carDetails || {};
 
   useEffect(() => {
@@ -102,6 +112,7 @@ function Details() {
                 style={{
                   borderTopLeftRadius: "50px",
                   borderTopRightRadius: "50px",
+                  paddingBottom: "100px",
                 }}
               >
                 <Sheet.Header />
@@ -148,16 +159,50 @@ function Details() {
                     />
                     <p className="fw-bold fs-5 ">Features</p>
                     <Row className="g-2">
-                      {features &&
-                        features.map((item, index) => (
-                          <Col xs={6} md={6} key={index} className="p-2">
-                            <div className="border border-1 p-3  d-flex align-items-center justify-content-center gap-2 flex-column">
-                              {item?.icon}
-                              <p className="m-0">{item.name}</p>
-                              <p className="m-0">{item.value}</p>
-                            </div>
-                          </Col>
-                        ))}
+                      {[
+                        {
+                          icon: <FaRegSun size={20} />,
+                          text: "sunoof",
+                          subText:
+                            sun_roof?.toLowerCase() === "yes"
+                              ? "Ray of hope for your ride"
+                              : "No",
+                        },
+                        {
+                          icon: <FaCarCrash size={20} />,
+                          text: "Breakdown ",
+                          subText:
+                            road_side_assistance?.toLowerCase() === "yes"
+                              ? "We are here to save you"
+                              : "No",
+                        },
+                        {
+                          icon: <BsBoxArrowInDown size={20} />,
+                          text: "Power Windows",
+                          subText:
+                            power_windows?.toLowerCase() === "yes"
+                              ? "We have power in your window"
+                              : "No",
+                        },
+                        {
+                          icon: <PiSteeringWheelDuotone size={20} />,
+                          text: "Power Steering",
+                          subText:
+                            power_steering?.toLowerCase() === "yes"
+                              ? "let's Rollllll!"
+                              : "No",
+                        },
+                      ].map((item, index) => (
+                        <Col xs={6} md={4} key={index} className="p-2">
+                          <div className="border border-1 p-3  d-flex align-items-center justify-content-center gap-2 flex-column">
+                            {item.icon}
+                            <p className="m-0 fw-bold fs-5">{item.text}</p>
+                            <p className="m-0" style={{ fontSize: "12px" }}>
+                              {item.subText}
+                            </p>
+                          </div>
+                        </Col>
+                      ))}
                     </Row>
 
                     <div className="d-flex align-items-center justify-content-between w-100 mt-3">
@@ -202,7 +247,8 @@ function Details() {
               <BookingModal
                 show={showBookingModal}
                 setShow={setShowBookingModal}
-                selfDrive={false}
+                selfDrive={selfDrive}
+                amount={price}
               />
               {/* <Sheet.Backdrop /> */}
             </Sheet>
@@ -215,16 +261,18 @@ function Details() {
                   paddingBottom: "40px",
                 }}
               >
-                <h4 className="fw-bold opacity-50 fs-1 text-white ">BMW X5</h4>
+                <h4 className="fw-bold opacity-50 fs-1 text-white ">
+                  {car_model}
+                </h4>
                 <div className="d-flex align-items-center gap-4  text-white opacity-25">
                   <span className="fs-6 d-flex align-items-center justify-content-center gap-2 ">
                     <FaGasPump />
-                    <p className="m-0">5KM/L</p>
+                    <p className="m-0">{mileage} KM/L</p>
                   </span>
                   <span className="fs-6 d-flex align-items-center justify-content-center gap-2 ">
                     <FaLocationArrow />
 
-                    <p className="m-0">>500kms</p>
+                    <p className="m-0">> {km_driven} kms</p>
                   </span>
                 </div>
               </div>
@@ -241,7 +289,7 @@ function Details() {
               >
                 <div className="d-flex justify-content-end">
                   <img
-                    src="https://pngimg.com/uploads/bmw/bmw_PNG99550.png"
+                    src={image}
                     className="img-fluid w-75"
                     style={{
                       marginTop: "-60px",
@@ -252,79 +300,36 @@ function Details() {
                 <Row className="g-2">
                   {[
                     {
-                      icon: <FaGasPump size={40} />,
-                      text: "Disel",
-                      subText: "Common Rail Fuel Injection",
+                      icon: <FaRegSun size={40} />,
+                      text: "sunoof",
+                      subText:
+                        sun_roof?.toLowerCase() === "yes"
+                          ? "Ray of hope for your ride"
+                          : "No",
                     },
                     {
-                      icon: <BsSpeedometer size={40} />,
-                      text: "Acceleration",
-                      subText: "0 - 100km / 11s",
+                      icon: <FaCarCrash size={40} />,
+                      text: "Breakdown ",
+                      subText:
+                        road_side_assistance?.toLowerCase() === "yes"
+                          ? "We are here to save you"
+                          : "No",
                     },
                     {
-                      icon: <PiSeat size={40} />,
-                      text: "Cool Seat",
-                      subText: "Temp Control on seat",
+                      icon: <BsBoxArrowInDown size={40} />,
+                      text: "Power Windows",
+                      subText:
+                        power_windows?.toLowerCase() === "yes"
+                          ? "We have power in your window"
+                          : "No",
                     },
                     {
-                      icon: <FaGasPump size={40} />,
-                      text: "Disel",
-                      subText: "Common Rail Fuel Injection",
-                    },
-                    {
-                      icon: <BsSpeedometer size={40} />,
-                      text: "Acceleration",
-                      subText: "0 - 100km / 11s",
-                    },
-                    {
-                      icon: <PiSeat size={40} />,
-                      text: "Cool Seat",
-                      subText: "Temp Control on seat",
-                    },
-                    {
-                      icon: <FaGasPump size={40} />,
-                      text: "Disel",
-                      subText: "Common Rail Fuel Injection",
-                    },
-                    {
-                      icon: <BsSpeedometer size={40} />,
-                      text: "Acceleration",
-                      subText: "0 - 100km / 11s",
-                    },
-                    {
-                      icon: <PiSeat size={40} />,
-                      text: "Cool Seat",
-                      subText: "Temp Control on seat",
-                    },
-                    {
-                      icon: <FaGasPump size={40} />,
-                      text: "Disel",
-                      subText: "Common Rail Fuel Injection",
-                    },
-                    {
-                      icon: <BsSpeedometer size={40} />,
-                      text: "Acceleration",
-                      subText: "0 - 100km / 11s",
-                    },
-                    {
-                      icon: <PiSeat size={40} />,
-                      text: "Cool Seat",
-                      subText: "Temp Control on seat",
-                    },
-                    {
-                      icon: <FaGasPump size={40} />,
-                      text: "Disel",
-                      subText: "Common Rail Fuel Injection",
-                    },
-                    {
-                      icon: <BsSpeedometer size={40} />,
-                      text: "Acceleration",
-                      subText: "0 - 100km / 11s",
-                    },
-                    {
-                      icon: <PiSeat size={40} />,
-                      text: "Cool Seat",
-                      subText: "Temp Control on seat",
+                      icon: <PiSteeringWheelDuotone size={40} />,
+                      text: "Power Steering",
+                      subText:
+                        power_steering?.toLowerCase() === "yes"
+                          ? "let's Rollllll!"
+                          : "No",
                     },
                   ].map((item, index) => (
                     <Col xs={6} md={4} key={index} className="p-2">
@@ -341,7 +346,7 @@ function Details() {
 
                 <div className="d-flex align-items-center justify-content-between w-100 mt-3">
                   <p className="m-0 fw-bold fs-4">
-                    Rs. 50000{" "}
+                    Rs. {price}
                     <span
                       style={{
                         fontSize: "12px",
@@ -351,10 +356,24 @@ function Details() {
                     </span>
                   </p>
                   <ButtonGroup>
-                    <Button variant="outline-dark" size="lg">
+                    <Button
+                      variant="outline-dark"
+                      size="lg"
+                      onClick={() => {
+                        setShowBookingModal(true);
+                        setSelfDrive(true);
+                      }}
+                    >
                       Rent Car
                     </Button>
-                    <Button variant="dark" size="md">
+                    <Button
+                      variant="dark"
+                      size="md"
+                      onClick={() => {
+                        setShowBookingModal(true);
+                        setSelfDrive(false);
+                      }}
+                    >
                       Rent with chauffeur
                     </Button>
                   </ButtonGroup>

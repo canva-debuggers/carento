@@ -91,20 +91,45 @@ function Login() {
     }
   };
   return (
-    <Container fluid style={{ backgroundColor: "#000", minHeight: "100vh" }}>
+    <Container
+      fluid
+      style={{
+        backgroundColor: "#000",
+        minHeight: "100vh",
+        overflow: "hidden",
+      }}
+    >
       <Row>
-        <Col xs={12}>
+        <Col xs={12} lg={4}>
           <div>
-            <div className="fs-3 text-white opacity-50">Carento.</div>
-            <div className="fs-1" style={{ color: "#fff" }}>
+            <div
+              className="text-white"
+              style={{
+                fontSize: "180px",
+                fontWeight: "bold",
+                marginLeft: "-100px",
+                opacity: "0.1",
+                marginTop: "-40px",
+              }}
+            >
+              Carento.
+            </div>
+            <div
+              style={{
+                color: "#fff",
+                fontSize: "20px",
+                marginBottom: "20px",
+                marginTop: "-40px",
+              }}
+            >
               Premium Cars. Enjoy the Luxury.
             </div>
             {loginForm === 1 && (
-              <Form onSubmit={handleLogin}>
+              <Form onSubmit={handleLogin} className="w-70">
                 <FloatingLabel
                   controlId="floatingInput"
                   label="Email address"
-                  className="mb-3"
+                  className="mb-3 text-white"
                 >
                   <Form.Control
                     type="email"
@@ -114,28 +139,43 @@ function Login() {
                       width: "20rem",
                     }}
                     onChange={(e) => setEmail(e.target.value)}
+                    style={{
+                      background: "rgba(255, 255, 255, 0.1)",
+                      border: "none",
+                      color: "#fff",
+                    }}
                   />
                 </FloatingLabel>
 
-                <FloatingLabel controlId="floatingPassword" label="Password">
+                <FloatingLabel
+                  controlId="floatingPassword"
+                  className="text-white"
+                  label="Password"
+                >
                   <Form.Control
                     type="password"
                     style={{ width: "20rem" }}
                     value={password}
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
+                    style={{
+                      background: "rgba(255, 255, 255, 0.1)",
+                      border: "none",
+                      color: "#fff",
+                    }}
                   />
                 </FloatingLabel>
 
                 <Button
                   type="submit"
                   style={{
-                    width: "20rem",
                     borderRadius: "40px",
-                    height: "3rem",
                     fontWeight: "bold",
                     background: "#fff",
                     marginTop: "1rem",
+                    border: 0,
+                    width: "100%",
+                    padding: "20px 0px",
                   }}
                 >
                   <span style={{ color: "#000" }} className="fs-6">
@@ -156,7 +196,7 @@ function Login() {
                 <FloatingLabel
                   controlId="floatingInput"
                   label="Name"
-                  className="mb-3"
+                  className="mb-3 text-white"
                 >
                   <Form.Control
                     type="text"
@@ -166,12 +206,17 @@ function Login() {
                       width: "20rem",
                     }}
                     onChange={(e) => setName(e.target.value)}
+                    style={{
+                      background: "rgba(255, 255, 255, 0.1)",
+                      border: "none",
+                      color: "#fff",
+                    }}
                   />
                 </FloatingLabel>
                 <FloatingLabel
                   controlId="floatingInput"
                   label="Email address"
-                  className="mb-3"
+                  className="mb-3 text-white"
                 >
                   <Form.Control
                     type="email"
@@ -181,28 +226,43 @@ function Login() {
                       width: "20rem",
                     }}
                     onChange={(e) => setEmail(e.target.value)}
+                    style={{
+                      background: "rgba(255, 255, 255, 0.1)",
+                      border: "none",
+                      color: "#fff",
+                    }}
                   />
                 </FloatingLabel>
 
-                <FloatingLabel controlId="floatingPassword" label="Password">
+                <FloatingLabel
+                  controlId="floatingPassword"
+                  label="Password"
+                  className="text-white"
+                >
                   <Form.Control
                     type="password"
                     style={{ width: "20rem" }}
                     value={password}
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
+                    style={{
+                      background: "rgba(255, 255, 255, 0.1)",
+                      border: "none",
+                      color: "#fff",
+                    }}
                   />
                 </FloatingLabel>
 
                 <Button
                   type="submit"
                   style={{
-                    width: "20rem",
                     borderRadius: "40px",
-                    height: "3rem",
                     fontWeight: "bold",
                     background: "#fff",
                     marginTop: "1rem",
+                    border: 0,
+                    width: "100%",
+                    padding: "20px 0px",
                   }}
                 >
                   <span style={{ color: "#000" }} className="fs-6">
@@ -212,12 +272,13 @@ function Login() {
                 <Button
                   type="button"
                   style={{
-                    width: "20rem",
                     borderRadius: "40px",
-                    height: "3rem",
                     fontWeight: "bold",
                     background: "#fff",
                     marginTop: "1rem",
+                    border: 0,
+                    width: "100%",
+                    padding: "20px 0px",
                   }}
                 >
                   <span
@@ -225,7 +286,12 @@ function Login() {
                     className="fs-6"
                     onClick={loginWithGoogle}
                   >
-                    Log in with google
+                    Log in with google{" "}
+                    <img
+                      src={"https://pngimg.com/d/google_PNG19635.png"}
+                      alt="Google Icon"
+                      height="30px"
+                    />
                   </span>
                 </Button>
                 <div
@@ -239,7 +305,7 @@ function Login() {
             )}
           </div>
         </Col>
-        <Col xs={12}>
+        <Col xs={12} lg={8} className="d-flex align-items-center ">
           <Image src={logoCarImg} alt="Background Image" />
         </Col>
       </Row>

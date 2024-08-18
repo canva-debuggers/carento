@@ -6,7 +6,7 @@ import { AccountContext } from "../context/AccountProvider";
 function MyGarage() {
   const [carList, setCarList] = useState([]);
   const { user } = useContext(AccountContext);
-  const { cars } = user;
+  const { cars } = user || {};
   useEffect(() => {
     if (cars && cars.length > 0) {
     }

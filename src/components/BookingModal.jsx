@@ -10,7 +10,7 @@ import { GeoPoint } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import Razorpaycheckout from "./Razorpaycheckout";
 
-function BookingModal({ show, selfDrive, setShow }) {
+function BookingModal({ show, selfDrive, setShow, amount }) {
   const [showPayment, setShowPayment] = useState(false);
   let { id } = useParams();
   console.log("id", id);
@@ -121,7 +121,7 @@ function BookingModal({ show, selfDrive, setShow }) {
         </Form>
       </Modal.Body>
 
-      {showPayment && <Razorpaycheckout />}
+      {showPayment && <Razorpaycheckout amount={amount} />}
     </Modal>
   );
 }
