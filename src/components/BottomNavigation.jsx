@@ -48,7 +48,7 @@ function BottomNavigation() {
               style={{
                 position: "absolute",
                 bottom: 50,
-                left: -30,
+                left: -35,
                 transform: "rotate(-90deg)",
                 fontWeight: "bold",
                 fontSize: "28px",

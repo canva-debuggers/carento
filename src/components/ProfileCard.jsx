@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { BsStarFill } from "react-icons/bs";
 import { AccountContext } from "../context/AccountProvider";
+import { Button } from "react-bootstrap";
+import RentMyCarModal from "./RentMyCarModal";
 
 function ProfileCard() {
   const { user } = useContext(AccountContext);
@@ -25,6 +27,10 @@ function ProfileCard() {
           <BsStarFill />
         ))}
       </span>
+      <Button variant="outline-dark" className="mt-3" size="sm">
+        Rent My Car
+      </Button>
+      <RentMyCarModal show={true} />
     </div>
   );
 }

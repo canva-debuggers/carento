@@ -42,7 +42,6 @@ function Login() {
       };
 
       const user = await createUser(email, password);
-      console.log("user", user.uid);
       if (user) {
         setAccount(user);
         await storeJsonInCollection("users", dataObj, user.uid);
