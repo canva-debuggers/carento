@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import {
   createUser,
   getAllDataFromCollection,
+  getDataFromCollection,
   googleUser,
   loginUser,
   retrieveAllDataFromCollection,
@@ -31,25 +32,47 @@ function Login() {
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
+      let dataObj = {
+        name: name,
+        email: email,
+        ratings: 5,
+        rides: 0,
+      };
 
-    const user = createUser(email, password);
-    console.log("user", user);
-    setAccount(user);
-    navigate("/dashboard");
+      const user = await createUser(email, password);
+      console.log("user", user.uid);
+      if (user) {
+        setAccount(user);
+        await storeJsonInCollection("users", dataObj, user.uid);
+        navigate("/dashboard");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
   const handleLogin = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    const user = loginUser(email, password);
-
-    setAccount(user);
-    navigate("/dashboard");
+      const user = await loginUser(email, password);
+      if (user) {
+        console.log("user", user);
+        setAccount(user);
+        const userDetails = await getDataFromCollection("users", user.uid);
+        console.log("userDetail", userDetails);
+        navigate("/dashboard");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
   const loginWithGoogle = async () => {
     try {
       const user = await googleUser();
       setAccount(user);
+      console.log("user", user);
       navigate("/dashboard");
     } catch (e) {
       console.log(e);
