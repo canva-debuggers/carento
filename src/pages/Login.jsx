@@ -24,7 +24,7 @@ import {
 } from "../queries/queries";
 
 function Login() {
-  const { setAccount } = useContext(AccountContext);
+  const { setAccount, setUser } = useContext(AccountContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -60,7 +60,7 @@ function Login() {
         console.log("user", user);
         setAccount(user);
         const userDetails = await getDataFromCollection("users", user.uid);
-        console.log("userDetail", userDetails);
+        setUser(userDetails);
         navigate("/dashboard");
       }
     } catch (e) {
