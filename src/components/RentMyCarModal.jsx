@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Modal } from "react-bootstrap";
 import RenderField from "./RenderField";
 import { useFormik } from "formik";
+import { storeJsonInCollection } from "../queries/queries";
+import { GeoPoint } from "firebase/firestore";
 
-function RentMyCarModal() {
+function RentMyCarModal({ show }) {
   const formik = useFormik({
     initialValues: {
       car_model: "",
@@ -39,7 +41,7 @@ function RentMyCarModal() {
   ];
 
   return (
-    <Modal show={true} size="lg">
+    <Modal show={show} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Rent your Car</Modal.Title>
       </Modal.Header>

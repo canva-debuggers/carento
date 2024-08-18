@@ -17,26 +17,22 @@ function Details() {
   return (
     <Container fluid className="p-0">
       <Row className="g-0">
-        <Col xs={12} md={6}>
-          <div className="map-container">
-            <MapContainer
-              center={{
-                lat: 22.572645,
-                lng: 88.363892,
-              }}
-            />
-            {isMobile && (
-              <div
-                className="position-absolute top-0 w-100 p-3"
-                style={{
-                  background:
-                    "linear-gradient(to bottom, white 40%, rgba(255, 255, 255, 0))",
-                }}
-                onClick={() => navigate(-1)}
-              >
-                <FaArrowLeft fontSize={"20px"} />
-              </div>
-            )}
+        <Col xs={12} md={6} className="map-container">
+          <MapContainer
+            center={{
+              lat: 22.572645,
+              lng: 88.363892,
+            }}
+          />
+          <div
+            className="d-block d-md-none position-absolute top-0 w-100 p-3"
+            style={{
+              background:
+                "linear-gradient(to bottom, white 40%, rgba(255, 255, 255, 0))",
+            }}
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft fontSize={"20px"} />
           </div>
         </Col>
         <Col
