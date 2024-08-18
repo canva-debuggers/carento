@@ -20,10 +20,13 @@ function ProfileCard() {
         className=" rounded-circle"
         style={{ height: "70px", width: "70px", objectFit: "cover" }}
       />
-      <h3 className=" fs-6 text-center mt-3 fw-semibold">{user.name}</h3>
-      <span className="fs-6 opacity-50 fw-semibold"> Rides : {user.rides}</span>
+      <h3 className=" fs-6 text-center mt-3 fw-semibold">{user?.name}</h3>
+      <span className="fs-6 opacity-50 fw-semibold">
+        {" "}
+        Rides : {user?.rides}
+      </span>
       <span className="fs-6 opacity-75">
-        {Array.from({ length: user.ratings }).map((_, index) => (
+        {Array.from({ length: user?.ratings }).map((_, index) => (
           <BsStarFill />
         ))}
       </span>

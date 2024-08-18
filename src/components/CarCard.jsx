@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 function CarCard({ car_model, mileage, price, id, image }) {
   const navigate = useNavigate();
   return (
-    <div className="pb-5 " onClick={() => navigate("/details" + id)}>
+    <div className="pb-5 " onClick={() => navigate("/details/" + id)}>
       <img src={image} alt="" className="w-100" />
       <h4 className="fw-bold opacity-75 fs-1">{car_model}</h4>
       <div className="d-flex align-items-center gap-4">
