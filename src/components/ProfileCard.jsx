@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { BsStarFill } from "react-icons/bs";
 import { AccountContext } from "../context/AccountProvider";
 import { Button } from "react-bootstrap";
@@ -8,6 +8,7 @@ import BookingModal from "./BookingModal";
 
 function ProfileCard() {
   const { user } = useContext(AccountContext);
+  const [showModal, setShowModal] = useState(false);
   console.log("user", user);
   return (
     <div
@@ -32,9 +33,15 @@ function ProfileCard() {
           <BsStarFill />
         ))}
       </span>
-      <Button variant="outline-dark" className="mt-3" size="sm">
+      <Button
+        variant="outline-dark"
+        className="mt-3"
+        size="sm"
+        onClick={() => setShowModal(true)}
+      >
         Rent My Car
       </Button>
+      <RentMyCarModal show={showModal} setShow={setShowModal} />
     </div>
   );
 }

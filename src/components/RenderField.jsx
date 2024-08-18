@@ -195,7 +195,7 @@ function RenderField({
                 geocodeByPlaceId(selctedAddress.value.place_id)
                   .then((results) => getLatLng(results[0]))
                   .then((latLng) => {
-                    handleChange(latLng);
+                    setFieldValue(field_name, latLng);
                   })
                   .catch((error) => console.error(error));
               }

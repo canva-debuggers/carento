@@ -1,19 +1,42 @@
-import React, { useEffect } from "react";
-import { Form, Modal } from "react-bootstrap";
+import React, { useContext, useEffect } from "react";
+import { Button, Form, Modal } from "react-bootstrap";
 import RenderField from "./RenderField";
 import { useFormik } from "formik";
 import { storeJsonInCollection } from "../queries/queries";
 import { GeoPoint } from "firebase/firestore";
+import { AccountContext } from "../context/AccountProvider";
 
-function RentMyCarModal({ show }) {
+function RentMyCarModal({ show, setShow }) {
+  const { user } = useContext(AccountContext);
   const formik = useFormik({
     initialValues: {
       car_model: "",
       type: "",
-      brand: ""
+      brand: "",
+      pickup_location: {},
+      mileage: "",
+      km_driven: "",
+      colour: "",
+      fuel_type: "",
+      price: "",
+      availability: [],
+      power_steering: "",
+      sun_roof: "",
+      ac: "",
+      power_window: "",
+      air_bag: "",
+      auto_drive: "",
+      road_side_assistance: "",
+      leather_seat_cover: "",
     },
     onSubmit: async (values) => {
-      console.log(values);
+      try {
+        console.log(values);
+        const carId = await storeJsonInCollection("cars", values)?.id;
+        console.log("carId", carId);
+      } catch (e) {
+        console.log(e);
+      }
     },
   });
   const { values, touched, errors, handleSubmit, handleChange, setFieldValue } =
@@ -42,21 +65,21 @@ function RentMyCarModal({ show }) {
       options: [
         {
           value: "SUV",
-          label: "SUV"
+          label: "SUV",
         },
         {
           value: "Hatchback",
-          label: "Hatchback"
+          label: "Hatchback",
         },
         {
           value: "Sedan",
-          label: "Sedan"
+          label: "Sedan",
         },
         {
           value: "XUV",
-          label: "XUV"
-        }
-      ]
+          label: "XUV",
+        },
+      ],
     },
     {
       label: "Brand",
@@ -69,7 +92,7 @@ function RentMyCarModal({ show }) {
       label: "Pickup Location",
       required: true,
       placeholder: "Pickup Location",
-      type: "text",
+      type: "googleAutocomplete",
       field_name: "pickup_location",
     },
     {
@@ -95,37 +118,37 @@ function RentMyCarModal({ show }) {
       options: [
         {
           value: "red",
-          label: "red"
+          label: "red",
         },
         {
           value: "green",
-          label: "green"
+          label: "green",
         },
         {
           value: "blue",
-          label: "blue"
+          label: "blue",
         },
         {
           value: "yellow",
-          label: "yellow"
+          label: "yellow",
         },
         {
           value: "blue",
-          label: "blue"
+          label: "blue",
         },
         {
           value: "black",
-          label: "black"
+          label: "black",
         },
         {
           value: "white",
-          label: "white"
+          label: "white",
         },
         {
           value: "gray",
-          label: "gray"
-        }
-      ]
+          label: "gray",
+        },
+      ],
     },
     {
       label: "Fuel Type",
@@ -135,22 +158,22 @@ function RentMyCarModal({ show }) {
       field_name: "fuel_type",
       options: [
         {
-          value:"Petrol",
-          label: "Petrol"
+          value: "Petrol",
+          label: "Petrol",
         },
         {
-          value:"Diesel",
-          label: "Diesel"
+          value: "Diesel",
+          label: "Diesel",
         },
         {
-          value:"CNG",
-          label: "CNG"
+          value: "CNG",
+          label: "CNG",
         },
         {
-          value:"Electric",
-          label: "Electric"
-        }
-      ]
+          value: "Electric",
+          label: "Electric",
+        },
+      ],
     },
     {
       label: "Price",
@@ -159,25 +182,144 @@ function RentMyCarModal({ show }) {
       type: "text",
       field_name: "price",
     },
+    // {
+    //   label: "Availablity",
+    //   required: true,
+    //   placeholder: "When is your car available?",
+    //   type: "text",
+    //   field_name: "availablity",
+    // },
     {
-      label: "Availablity",
+      label: "Power Steering",
       required: true,
-      placeholder: "When is your car available?",
-      type: "text",
-      field_name: "availablity",
+      placeholder: "Select Options",
+      type: "select",
+      field_name: "power_steering",
+      options: [
+        {
+          value: "Yes",
+          label: "Yes",
+        },
+        {
+          value: "No",
+          label: "No",
+        },
+      ],
     },
     {
-      label: "Features",
+      label: "Sun Roof",
       required: true,
-      placeholder: "Write at least 3 features of your car",
+      placeholder: "Select Options",
+      type: "select",
+      field_name: "sun_roof",
+      options: [
+        {
+          value: "Yes",
+          label: "Yes",
+        },
+        {
+          value: "No",
+          label: "No",
+        },
+      ],
+    },
+    {
+      label: "Ac",
+      required: true,
+      placeholder: "Select Options",
+      type: "select",
+      field_name: "ac",
+      options: [
+        {
+          value: "Yes",
+          label: "Yes",
+        },
+        {
+          value: "No",
+          label: "No",
+        },
+      ],
+    },
+    {
+      label: "Power Window",
+      required: true,
+      placeholder: "Select Options",
+      type: "select",
+      field_name: "power_window",
+      options: [
+        {
+          value: "Yes",
+          label: "Yes",
+        },
+        {
+          value: "No",
+          label: "No",
+        },
+      ],
+    },
+    {
+      label: "Air Bag",
+      required: true,
+      placeholder: "Select Options",
       type: "text",
-      field_name: "features",
+      field_name: "air_bag",
+    },
+    {
+      label: "Auto Drive",
+      required: true,
+      placeholder: "Select Options",
+      type: "select",
+      field_name: "auto_drive",
+      options: [
+        {
+          value: "Yes",
+          label: "Yes",
+        },
+        {
+          value: "No",
+          label: "No",
+        },
+      ],
+    },
+    {
+      label: "Road Side Assistance",
+      required: true,
+      placeholder: "Select Options",
+      type: "select",
+      field_name: "road_side_assistance",
+      options: [
+        {
+          value: "Yes",
+          label: "Yes",
+        },
+        {
+          value: "No",
+          label: "No",
+        },
+      ],
+    },
+    {
+      label: "Leather Seat Cover",
+      required: true,
+      placeholder: "Select Options",
+      type: "select",
+      field_name: "leather_seat_cover",
+      options: [
+        {
+          value: "Yes",
+          label: "Yes",
+        },
+        {
+          value: "No",
+          label: "No",
+        },
+      ],
     },
   ];
 
   return (
     <Modal show={show} size="lg">
-      <Modal.Header closeButton>
+      <Modal.Header closeButton onClick={() => setShow(false)}>
         <Modal.Title>Rent your Car</Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -192,6 +334,7 @@ function RentMyCarModal({ show }) {
               setFieldValue={setFieldValue}
             />
           ))}
+          <Button type="submit">Rent My Car</Button>
         </Form>
       </Modal.Body>
     </Modal>
