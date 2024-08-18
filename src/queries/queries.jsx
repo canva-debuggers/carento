@@ -5,7 +5,15 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  setDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 
 export const createUser = async (email, password) => {
   const auth = getAuth();
@@ -67,13 +75,17 @@ export const googleUser = async () => {
     });
 };
 
-export async function storeJsonInCollection(collectionName, jsonData) {
+export async function storeJsonInCollection(collectionName, jsonData, docName) {
   try {
     // Get a reference to the Firestore database
     const db = getFirestore();
-
+    let collectionRef;
     // Get a reference to the specified collection
-    const collectionRef = collection(db, collectionName);
+    if (docName) {
+      collectionRef = doc(db, collectionName, docName);
+    } else {
+      collectionRef = collection(db, collectionName);
+    }
 
     // Validate that jsonData is an object and not null
     if (typeof jsonData !== "object" || jsonData === null) {
@@ -83,41 +95,57 @@ export async function storeJsonInCollection(collectionName, jsonData) {
     // Log the data being added (for debugging)
 
     // Add the entire JSON data as a new document in the collection
-    const docRef = await addDoc(collectionRef, jsonData);
-
-    console.log("Document written with ID: ", docRef.id);
-    return docRef.id;
+    let docRef;
+    if (docName) {
+      docRef = await setDoc(collectionRef, jsonData);
+      console.log("Document written with ID: ", docRef);
+      return docRef;
+    } else {
+      docRef = await addDoc(collectionRef, jsonData);
+      console.log("Document written with ID: ", docRef);
+      return docRef;
+    }
   } catch (error) {
     console.error("Error adding document: ", error);
     throw error;
   }
 }
 
-export async function getAllDataFromCollection(collectionName) {
+export async function getDataFromCollection(collectionName, id = null) {
   try {
-    // Get a reference to the Firestore database
     const db = getFirestore();
+    console.log("id", id);
+    if (id) {
+      // Fetch a single document if id is provided
+      const docRef = doc(db, collectionName, id);
+      const docSnap = await getDoc(docRef);
 
-    // Get a reference to the specified collection
-    const collectionRef = collection(db, collectionName);
+      if (docSnap.exists()) {
+        return {
+          id: docSnap.id,
+          ...docSnap.data(),
+        };
+      } else {
+        console.log("No such document!");
+        return null;
+      }
+    } else {
+      // Fetch all documents if no id is provided
+      const collectionRef = collection(db, collectionName);
+      const querySnapshot = await getDocs(collectionRef);
+      const data = [];
 
-    // Get all documents from the collection
-    const querySnapshot = await getDocs(collectionRef);
-
-    // Array to store the retrieved data
-    const data = [];
-
-    // Iterate through the documents and add them to the data array
-    querySnapshot.forEach((doc) => {
-      data.push({
-        id: doc.id,
-        ...doc.data(),
+      querySnapshot.forEach((doc) => {
+        data.push({
+          id: doc.id,
+          ...doc.data(),
+        });
       });
-    });
 
-    return data;
+      return data;
+    }
   } catch (error) {
-    console.error("Error retrieving documents: ", error);
+    console.error("Error retrieving data: ", error);
     throw error;
   }
 }
