@@ -22,7 +22,7 @@ function PopularNearByCars({ data = [1, 2, 3, 4, 5] }) {
           } `}
         >
           <Col xs={10}>
-            <Link to="/dashboard/123">
+            <Link to="/dashboard/detail/123">
               <h5 className="fw-semibold text-white">Corolla Cross</h5>
               <div className="text-light d-flex align-items-center gap-4 opacity-25">
                 <span className=" fs-6 d-flex align-items-center justify-content-center gap-2">

@@ -8,7 +8,7 @@ function PrivateRouter({ children }) {
   if (account) {
     return children;
   } else {
-    <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
 }
 

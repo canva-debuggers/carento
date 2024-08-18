@@ -18,20 +18,42 @@ function App() {
       <APIProvider apiKey={"AIzaSyCrkT383kr0odCNYNvNULUcWn9B_wmOIYE"}>
         <BrowserRouter>
           <Routes>
-            <Route
-              path="/"
-              element={
-                <PrivateRouter>
-                  <DefaultLayout />
-                </PrivateRouter>
-              }
-            >
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/dashboard/:id" element={<Details />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/profile" element={<Profile />} />
+            <Route path="/" element={<Login />} />
+
+            <Route path="/dashboard" element={<DefaultLayout />}>
+              <Route
+                index
+                element={
+                  <PrivateRouter>
+                    <Dashboard />
+                  </PrivateRouter>
+                }
+              />
+              <Route
+                path="detail/:id"
+                element={
+                  <PrivateRouter>
+                    <Details />
+                  </PrivateRouter>
+                }
+              />
+              <Route
+                path="search"
+                element={
+                  <PrivateRouter>
+                    <Search />
+                  </PrivateRouter>
+                }
+              />
+              <Route
+                path="profile"
+                element={
+                  <PrivateRouter>
+                    <Profile />
+                  </PrivateRouter>
+                }
+              />
             </Route>
-            <Route path="/login" element={<Login />} />
           </Routes>
         </BrowserRouter>
       </APIProvider>

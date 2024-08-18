@@ -27,13 +27,19 @@ function BottomNavigation() {
               </Link>
             </Nav.Item>
             <Nav.Item>
-              <Link to="/search" className="d-flex align-items-center">
+              <Link
+                to="/dashboard/search"
+                className="d-flex align-items-center"
+              >
                 <BiSearch size={20} />
                 {/* <span>Search</span> */}
               </Link>
             </Nav.Item>
             <Nav.Item>
-              <Link to="/profile" className="d-flex align-items-center">
+              <Link
+                to="/dashboard/profile"
+                className="d-flex align-items-center"
+              >
                 <BiUser size={20} />
                 {/* <span>Profile</span> */}
               </Link>
@@ -80,7 +86,7 @@ function BottomNavigation() {
             </Nav.Item>
             <Nav.Item>
               <Link
-                to="/search"
+                to="/dashboard/search"
                 className="d-flex align-items-center flex-column"
               >
                 <BiSearch size={20} />
@@ -89,7 +95,7 @@ function BottomNavigation() {
             </Nav.Item>
             <Nav.Item>
               <Link
-                to="/profile"
+                to="/dashboard/profile"
                 className="d-flex align-items-center flex-column"
               >
                 <BiUser size={20} />
