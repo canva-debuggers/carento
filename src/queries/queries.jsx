@@ -226,6 +226,20 @@ export async function getDataFromCollectionaddGeo(collectionName, jsonData) {
     return data;
   } catch (error) {
     console.error("Error retrieving data: ", error);
+  }
+}
+
+export async function uploadDocumentFirebase(file, userId) {
+  try {
+    const storage = firebase.storage();
+    const storageRef = storage.ref(`driving_license/${userId}`);
+
+    const snapshot = await storageRef.put(file);
+    const downloadURL = await snapshot.ref.getDownloadURL();
+
+    return downloadURL;
+  } catch (error) {
+    console.error("Error uploading document:", error);
     throw error;
   }
 }

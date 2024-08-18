@@ -24,6 +24,7 @@ function Details() {
     });
 
   const [isOpen, setOpen] = useState(true);
+  const [showBookingModal, setShowBookingModal] = useState(false);
   const ref = useRef();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -165,12 +166,26 @@ function Details() {
                     </div>
                     <div className="d-flex align-items-center justify-content-center w-100 mt-3">
                       <ButtonGroup>
-                        <Button variant="outline-dark" size="lg">
-                          <BookingModal show={true} selfDrive={true} />
+                        <Button
+                          variant="outline-dark"
+                          size="lg"
+                          onClick={() => setShowBookingModal(true)}
+                        >
+                          <BookingModal
+                            show={showBookingModal}
+                            selfDrive={true}
+                          />
                           Rent Car
                         </Button>
-                        <Button variant="dark" size="md">
-                          <BookingModal show={true} selfDrive={false} />
+                        <Button
+                          variant="dark"
+                          size="md"
+                          onClick={() => setShowBookingModal(true)}
+                        >
+                          <BookingModal
+                            show={showBookingModal}
+                            selfDrive={false}
+                          />
                           Rent with chauffeur
                         </Button>
                       </ButtonGroup>

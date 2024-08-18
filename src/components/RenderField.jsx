@@ -5,6 +5,7 @@ import GooglePlacesAutocomplete, {
   getLatLng,
 } from "react-google-places-autocomplete";
 import Select from "react-select";
+import { uploadDocumentFirebase } from "../queries/queries";
 
 function RenderField({
   type,
@@ -20,6 +21,17 @@ function RenderField({
   required,
   disabled = false,
 }) {
+  async function uploadFile(e, fieldName) {
+    try {
+      const file = e.target.files[0];
+      console.log("file", file);
+      const url = await uploadDocumentFirebase(file);
+      setFieldValue(fieldName, url);
+      console.log("url", url);
+    } catch (e) {
+      console.log(e);
+    }
+  }
   function getNestedValue(errors, path) {
     if (!errors || !path) return undefined;
     const parts = path.split(".");
@@ -174,7 +186,6 @@ function RenderField({
           debounce={300}
           selectProps={{
             //   value: locationFilterValue,
-            value: "",
             onChange: (selctedAddress) => {
               if (
                 selctedAddress &&
@@ -191,6 +202,29 @@ function RenderField({
             },
           }}
         />
+      );
+    case "file":
+      return (
+        <FloatingLabel
+          controlId={label}
+          label={`${label} ${required ? "*" : ""}`}
+          className="mb-3 custom-form-floating "
+        >
+          <Form.Control
+            type={type}
+            placeholder={placeholder}
+            name={field_name}
+            onChange={(e) => uploadFile(e, field_name)}
+            isInvalid={
+              getNestedValue(touched, field_name) &&
+              !!getNestedValue(errors, field_name)
+            }
+          />
+
+          <Form.Control.Feedback type="invalid">
+            {getNestedValue(errors, field_name)}
+          </Form.Control.Feedback>
+        </FloatingLabel>
       );
     default:
       return (
