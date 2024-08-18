@@ -25,6 +25,7 @@ function Details() {
 
   const [isOpen, setOpen] = useState(true);
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const [selfDrive, setSelfDrive] = useState(false);
   const ref = useRef();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -36,8 +37,15 @@ function Details() {
     }
   }, [id]);
 
-  const { car_model, mileage, price, image, km_driven, features, location } =
-    carDetails || {};
+  const {
+    car_model,
+    mileage,
+    price,
+    image,
+    km_driven,
+    features,
+    pickup_location,
+  } = carDetails || {};
 
   useEffect(() => {
     if (!isOpen) {
@@ -49,14 +57,14 @@ function Details() {
     <div>Your browser does not support Geolocation</div>
   ) : !isGeolocationEnabled ? (
     <div>Geolocation is not enabled</div>
-  ) : coords && location ? (
+  ) : coords && pickup_location ? (
     <Container fluid className="p-0">
       <Row className="g-0">
         <Col xs={12} md={6} className="map-container">
           <MapContainer
             center={{
-              lat: location?._lat,
-              lng: location?._long,
+              lat: pickup_location?._lat,
+              lng: pickup_location?._long,
             }}
             navigateFrom={{
               lat: coords?.latitude,
@@ -169,24 +177,21 @@ function Details() {
                         <Button
                           variant="outline-dark"
                           size="lg"
-                          onClick={() => setShowBookingModal(true)}
+                          onClick={() => {
+                            setShowBookingModal(true);
+                            setSelfDrive(true);
+                          }}
                         >
-                          <BookingModal
-                            show={showBookingModal}
-                            setShow={setShowBookingModal}
-                            selfDrive={true}
-                          />
                           Rent Car
                         </Button>
                         <Button
                           variant="dark"
                           size="md"
-                          onClick={() => setShowBookingModal(true)}
+                          onClick={() => {
+                            setShowBookingModal(true);
+                            setSelfDrive(false);
+                          }}
                         >
-                          <BookingModal
-                            show={showBookingModal}
-                            selfDrive={false}
-                          />
                           Rent with chauffeur
                         </Button>
                       </ButtonGroup>
@@ -194,6 +199,11 @@ function Details() {
                   </div>
                 </Sheet.Content>
               </Sheet.Container>
+              <BookingModal
+                show={showBookingModal}
+                setShow={setShowBookingModal}
+                selfDrive={false}
+              />
               {/* <Sheet.Backdrop /> */}
             </Sheet>
           ) : (
