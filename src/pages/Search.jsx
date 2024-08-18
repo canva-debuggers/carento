@@ -32,6 +32,7 @@ import CarCard from "../components/CarCard";
 import MapContainer from "../components/MapContainer";
 import { BsArrowRightCircle } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { APIProvider } from "@vis.gl/react-google-maps";
 
 function Search() {
   const [startDate, setStartDate] = useState(new Date());

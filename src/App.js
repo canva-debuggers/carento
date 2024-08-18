@@ -15,48 +15,46 @@ import Search from "./pages/Search";
 function App() {
   return (
     <AccountProvider>
-      <APIProvider apiKey={"AIzaSyCrkT383kr0odCNYNvNULUcWn9B_wmOIYE"}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Login />} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
 
-            <Route path="/dashboard" element={<DefaultLayout />}>
-              <Route
-                index
-                element={
-                  <PrivateRouter>
-                    <Dashboard />
-                  </PrivateRouter>
-                }
-              />
-              <Route
-                path="detail/:id"
-                element={
-                  <PrivateRouter>
-                    <Details />
-                  </PrivateRouter>
-                }
-              />
-              <Route
-                path="search"
-                element={
-                  <PrivateRouter>
-                    <Search />
-                  </PrivateRouter>
-                }
-              />
-              <Route
-                path="profile"
-                element={
-                  <PrivateRouter>
-                    <Profile />
-                  </PrivateRouter>
-                }
-              />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </APIProvider>
+          <Route path="/dashboard" element={<DefaultLayout />}>
+            <Route
+              index
+              element={
+                <PrivateRouter>
+                  <Dashboard />
+                </PrivateRouter>
+              }
+            />
+            <Route
+              path="detail/:id"
+              element={
+                <PrivateRouter>
+                  <Details />
+                </PrivateRouter>
+              }
+            />
+            <Route
+              path="search"
+              element={
+                <PrivateRouter>
+                  <Search />
+                </PrivateRouter>
+              }
+            />
+            <Route
+              path="profile"
+              element={
+                <PrivateRouter>
+                  <Profile />
+                </PrivateRouter>
+              }
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </AccountProvider>
   );
 }

@@ -5,7 +5,14 @@ import { FaGasPump, FaLocationArrow } from "react-icons/fa";
 import { PiSeat } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 
-function CarCard({ car_model, mileage, price, id, image }) {
+function CarCard({
+  car_model,
+  mileage,
+  price,
+  id,
+  image,
+  noBookButton = false,
+}) {
   const navigate = useNavigate();
   return (
     <div className="pb-5 " onClick={() => navigate("/dashboard/detail/" + id)}>
@@ -31,9 +38,11 @@ function CarCard({ car_model, mileage, price, id, image }) {
           <PiSeat />
         </span>
       </div>
-      <div className="d-flex align-items-center justify-content-center mt-3">
-        <Button variant="outline-dark">Book Now</Button>
-      </div>
+      {!noBookButton && (
+        <div className="d-flex align-items-center justify-content-center mt-3">
+          <Button variant="outline-dark">Book Now</Button>
+        </div>
+      )}
     </div>
   );
 }

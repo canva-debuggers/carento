@@ -2,6 +2,7 @@ import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import ProfileCard from "../components/ProfileCard";
 import VisitedLocations from "../components/VisitedLocations";
+import MyGarage from "../components/MyGarage";
 
 function Profile() {
   return (
@@ -12,6 +13,9 @@ function Profile() {
         </Col>
         <Col xs={12} md={8} className="p-4">
           <VisitedLocations height={"200px"} />
+        </Col>
+        <Col xs={12} className="p-4">
+          <MyGarage />
         </Col>
       </Row>
     </Container>
