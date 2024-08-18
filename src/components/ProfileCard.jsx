@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BsStarFill } from "react-icons/bs";
+import { AccountContext } from "../context/AccountProvider";
 
 function ProfileCard() {
+  const { user } = useContext(AccountContext);
+  console.log("user", user);
   return (
     <div
       className="bg-light  p-3 d-flex align-items-center flex-column"
@@ -15,14 +18,12 @@ function ProfileCard() {
         className=" rounded-circle"
         style={{ height: "70px", width: "70px", objectFit: "cover" }}
       />
-      <h3 className=" fs-6 text-center mt-3 fw-semibold">Aritra Kr. Basu</h3>
-      <span className="fs-6 opacity-50 fw-semibold"> Rides : 5</span>
+      <h3 className=" fs-6 text-center mt-3 fw-semibold">{user.name}</h3>
+      <span className="fs-6 opacity-50 fw-semibold"> Rides : {user.rides}</span>
       <span className="fs-6 opacity-75">
-        <BsStarFill />
-        <BsStarFill />
-        <BsStarFill />
-        <BsStarFill />
-        <BsStarFill />
+        {Array.from({ length: user.ratings }).map((_, index) => (
+          <BsStarFill />
+        ))}
       </span>
     </div>
   );
