@@ -34,16 +34,17 @@ function Login() {
   const handleRegister = async (e) => {
     try {
       e.preventDefault();
-      let dataObj = {
-        name: name,
-        email: email,
-        ratings: 5,
-        rides: 0,
-      };
 
       const user = await createUser(email, password);
       if (user) {
         setAccount(user);
+        let dataObj = {
+          name: name,
+          email: email,
+          ratings: 5,
+          rides: 0,
+          photoURL: user.photoURL ? user.photoURL : null,
+        };
         await storeJsonInCollection("users", dataObj, user.uid);
         navigate("/dashboard");
       }
@@ -70,9 +71,21 @@ function Login() {
   const loginWithGoogle = async () => {
     try {
       const user = await googleUser();
-      setAccount(user);
-      console.log("user", user);
-      navigate("/dashboard");
+      if (user) {
+        setAccount(user);
+        console.log("user", user);
+        const dataObj = {
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          ratings: 5,
+          rides: 0,
+        };
+        await storeJsonInCollection("users", dataObj, user.uid);
+        const userDetails = await getDataFromCollection("users", user.uid);
+        setUser(userDetails);
+        navigate("/dashboard");
+      }
     } catch (e) {
       console.log(e);
     }

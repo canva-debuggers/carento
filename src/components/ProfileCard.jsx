@@ -3,6 +3,7 @@ import { BsStarFill } from "react-icons/bs";
 import { AccountContext } from "../context/AccountProvider";
 import { Button } from "react-bootstrap";
 import RentMyCarModal from "./RentMyCarModal";
+import default_profile from "../assets/default_profile.jpg";
 
 function ProfileCard() {
   const { user } = useContext(AccountContext);
@@ -15,7 +16,7 @@ function ProfileCard() {
       }}
     >
       <img
-        src="https://i.pinimg.com/236x/8b/84/6f/8b846fefdc265bc26e7480e7ddc01225.jpg"
+        src={user?.photoURL ? user.photoURL : default_profile}
         alt=""
         className=" rounded-circle"
         style={{ height: "70px", width: "70px", objectFit: "cover" }}
