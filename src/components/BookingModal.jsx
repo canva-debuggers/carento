@@ -9,7 +9,7 @@ import {
 import { GeoPoint } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 
-function BookingModal({ show, selfDrive }) {
+function BookingModal({ show, selfDrive, setShow }) {
   let { id } = useParams();
   console.log("id", id);
   const formik = useFormik({
@@ -75,7 +75,7 @@ function BookingModal({ show, selfDrive }) {
 
   return (
     <Modal show={show} size="lg" style={{ zIndex: 99999999 }}>
-      <Modal.Header closeButton>
+      <Modal.Header closeButton onClick={() => setShow(false)}>
         <Modal.Title>Rent Car</Modal.Title>
       </Modal.Header>
       <Modal.Body>

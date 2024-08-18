@@ -173,6 +173,7 @@ function Details() {
                         >
                           <BookingModal
                             show={showBookingModal}
+                            setShow={setShowBookingModal}
                             selfDrive={true}
                           />
                           Rent Car
