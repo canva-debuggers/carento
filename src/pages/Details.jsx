@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, ButtonGroup, Col, Container, Row } from "react-bootstrap";
 import MapContainer from "../components/MapContainer";
 import { FaArrowLeft, FaGasPump, FaLocationArrow } from "react-icons/fa";
@@ -7,13 +7,24 @@ import { PiSeat } from "react-icons/pi";
 import { BsSpeedometer } from "react-icons/bs";
 import { BiCross } from "react-icons/bi";
 import { FiArrowLeftCircle } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { isMobile } from "react-device-detect";
+import { getDataFromCollection } from "../queries/queries";
 
 function Details() {
+  const [carDetails, setCarDetails] = useState({});
   const [isOpen, setOpen] = useState(true);
   const ref = useRef();
   const navigate = useNavigate();
+  const { id } = useParams();
+  useEffect(() => {
+    if (id) {
+      getDataFromCollection("cars", id).then((data) => {
+        console.log("data", data);
+        setCarDetails(data);
+      });
+    }
+  }, [id]);
   return (
     <Container fluid className="p-0">
       <Row className="g-0">
