@@ -6,3 +6,15 @@ a {
   text-decoration: none !important;
   color: inherit !important;
 }
+
+.map-container{
+  height: 70vh; 
+  width: 100%
+}
+
+
+@media (min-width: 768px) {
+.map-container {
+    height: 100vh;
+  }
+}

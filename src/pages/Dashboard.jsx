@@ -18,7 +18,7 @@ function Dashboard() {
   return (
     <Container>
       <Row>
-        <Col xs={12} className="p-4">
+        <Col xs={12} md={4} className="p-4">
           <div
             className="d-flex flex-column  align-items-start justify-content-center bg-light p-4"
             style={{ borderRadius: "15px" }}
@@ -53,17 +53,50 @@ function Dashboard() {
               </Button>
             </div>
           </div>
+
+          {
+            <div className="d-none d-md-block mt-4">
+              <h4 className="fw-bold opacity-25 fs-2">Search By Categories</h4>
+              <Row>
+                {[
+                  {
+                    name: "HatchBack",
+                    icon: hatchBachImage,
+                  },
+                  {
+                    name: "Sedan",
+                    icon: sedanImage,
+                  },
+                  {
+                    name: "SUV",
+                    icon: suvImage,
+                  },
+                  {
+                    name: "MUV",
+                    icon: muvImage,
+                  },
+                ].map((item, index) => (
+                  <Col key={index} xs={3}>
+                    <CategoryCard key={index} {...item} />
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          }
         </Col>
-        <Col xs={6} className="ps-4">
+        <Col xs={6} md={3} className="p-4 d-flex gap-4 flex-column">
           <ProfileCard />
+          <div className="d-none d-md-block" style={{ height: "300px" }}>
+            <VisitedLocations />
+          </div>
         </Col>
-        <Col xs={6} className="pe-4">
+        <Col xs={6} md={4} className="p-4 d-block d-md-none">
           <VisitedLocations />
         </Col>
-        <Col xs={12} className="p-4">
+        <Col xs={12} md={5} className="p-4">
           <PopularNearByCars />
         </Col>
-        <Col xs={12} className="p-4">
+        <Col xs={12} className="p-4" className="d-block d-md-none">
           <h4 className="fw-bold opacity-25 fs-2">Search By Categories</h4>
           <Row>
             {[
@@ -93,7 +126,7 @@ function Dashboard() {
         <Col xs={12} className="p-4">
           <Row>
             {[1, 2, 3, 4].map((item, index) => (
-              <Col xs={6} key={index}>
+              <Col xs={6} md={3} key={index}>
                 <CarCard />
               </Col>
             ))}
