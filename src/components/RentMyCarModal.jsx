@@ -59,14 +59,8 @@ function RentMyCarModal({ show, setShow }) {
       label: "Car Model",
       required: true,
       placeholder: "select Car Model",
-      type: "select",
+      type: "text",
       field_name: "car_model",
-      options: [
-        {
-          value: "Model 1",
-          label: "Model 1",
-        },
-      ],
     },
     {
       label: "Type",
