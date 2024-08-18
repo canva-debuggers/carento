@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useContext } from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
 import GooglePlacesAutocomplete, {
   geocodeByPlaceId,
@@ -6,6 +6,7 @@ import GooglePlacesAutocomplete, {
 } from "react-google-places-autocomplete";
 import Select from "react-select";
 import { uploadDocumentFirebase } from "../queries/queries";
+import { AccountContext } from "../context/AccountProvider";
 
 function RenderField({
   type,
@@ -21,11 +22,12 @@ function RenderField({
   required,
   disabled = false,
 }) {
+  const { user } = useContext(AccountContext);
   async function uploadFile(e, fieldName) {
     try {
       const file = e.target.files[0];
       console.log("file", file);
-      const url = await uploadDocumentFirebase(file);
+      const url = await uploadDocumentFirebase(file, user.id, fieldName);
       setFieldValue(fieldName, url);
       console.log("url", url);
     } catch (e) {

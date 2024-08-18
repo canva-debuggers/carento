@@ -2,7 +2,10 @@ import React, { useContext, useEffect } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import RenderField from "./RenderField";
 import { useFormik } from "formik";
-import { storeJsonInCollection } from "../queries/queries";
+import {
+  getDataFromCollectionaddGeo,
+  storeJsonInCollection,
+} from "../queries/queries";
 import { GeoPoint } from "firebase/firestore";
 import { AccountContext } from "../context/AccountProvider";
 
@@ -17,6 +20,7 @@ function RentMyCarModal({ show, setShow }) {
       mileage: "",
       km_driven: "",
       colour: "",
+      image: {},
       fuel_type: "",
       price: "",
       availability: [],
@@ -32,8 +36,16 @@ function RentMyCarModal({ show, setShow }) {
     onSubmit: async (values) => {
       try {
         console.log(values);
-        const carId = await storeJsonInCollection("cars", values)?.id;
-        console.log("carId", carId);
+        const car = await getDataFromCollectionaddGeo("cars", {
+          ...values,
+          coordinates: {
+            lat: values.pickup_location.lat,
+            lng: values.pickup_location.lng,
+          },
+        });
+        console.log("car", car, user);
+        await storeJsonInCollection("users", { cars: [car.id] }, user.id);
+        setShow(false);
       } catch (e) {
         console.log(e);
       }
@@ -80,6 +92,13 @@ function RentMyCarModal({ show, setShow }) {
           label: "XUV",
         },
       ],
+    },
+    {
+      label: "Car Image",
+      required: true,
+      placeholder: "Select car image",
+      type: "file",
+      field_name: "image",
     },
     {
       label: "Brand",
@@ -260,7 +279,7 @@ function RentMyCarModal({ show, setShow }) {
     {
       label: "Air Bag",
       required: true,
-      placeholder: "Select Options",
+      placeholder: "Number of Airbags",
       type: "text",
       field_name: "air_bag",
     },
