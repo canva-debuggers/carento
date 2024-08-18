@@ -1,5 +1,7 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 import { BsStarFill } from "react-icons/bs";
+import RentMyCarModal from "./RentMyCarModal";
 
 function ProfileCard() {
   return (
@@ -24,6 +26,10 @@ function ProfileCard() {
         <BsStarFill />
         <BsStarFill />
       </span>
+      <Button variant="outline-dark" className="mt-3" size="sm">
+        Rent My Car
+      </Button>
+      <RentMyCarModal show={true} />
     </div>
   );
 }
