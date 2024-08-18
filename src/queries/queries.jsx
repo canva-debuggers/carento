@@ -14,6 +14,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 export const createUser = async (email, password) => {
   const auth = getAuth();
@@ -146,6 +147,21 @@ export async function getDataFromCollection(collectionName, id = null) {
     }
   } catch (error) {
     console.error("Error retrieving data: ", error);
+    throw error;
+  }
+}
+
+export async function uploadDocumentFirebase(file, userId) {
+  try {
+    const storage = getStorage();
+    const storageRef = ref(storage, `driving_license/${userId}`);
+
+    const snapshot = await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+
+    return downloadURL;
+  } catch (error) {
+    console.error("Error uploading document:", error);
     throw error;
   }
 }

@@ -35,7 +35,6 @@ function ProfileCard() {
       <Button variant="outline-dark" className="mt-3" size="sm">
         Rent My Car
       </Button>
-      <BookingModal show={false} />
     </div>
   );
 }
