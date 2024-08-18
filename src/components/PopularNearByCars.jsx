@@ -1,11 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { BsArrowRightCircle, BsArrowRightCircleFill } from "react-icons/bs";
 import { FaGasPump, FaLocationArrow } from "react-icons/fa";
 import { FaRegCircleDot } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { getDataFromCollectionByGeo } from "../queries/queries";
+import { useGeolocated } from "react-geolocated";
+import { GeoPoint } from "firebase/firestore";
 
 function PopularNearByCars({ data = [1, 2, 3, 4, 5] }) {
+  const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+    useGeolocated({
+      positionOptions: {
+        enableHighAccuracy: false,
+      },
+      userDecisionTimeout: 5000,
+    });
+
+  useEffect(() => {
+    console.log("coords", coords);
+    if (isGeolocationAvailable && coords) {
+      getDataFromCollectionByGeo(
+        "cars",
+        new GeoPoint(coords.latitude, coords.longitude)
+      ).then((data) => {
+        console.log("hiioi", data);
+      });
+    }
+  }, [data, isGeolocationAvailable, coords]);
   return (
     <div className="bg-dark p-4 rounded">
       <div className="d-flex align-items-center justify-content-between w-100 text-white opacity-50">
