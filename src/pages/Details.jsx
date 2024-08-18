@@ -10,9 +10,18 @@ import { FiArrowLeftCircle } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { getDataFromCollection } from "../queries/queries";
+import { useGeolocated } from "react-geolocated";
 
 function Details() {
   const [carDetails, setCarDetails] = useState({});
+  const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+    useGeolocated({
+      positionOptions: {
+        enableHighAccuracy: false,
+      },
+      userDecisionTimeout: 5000,
+    });
+
   const [isOpen, setOpen] = useState(true);
   const ref = useRef();
   const navigate = useNavigate();
@@ -20,19 +29,36 @@ function Details() {
   useEffect(() => {
     if (id) {
       getDataFromCollection("cars", id).then((data) => {
-        console.log("data", data);
         setCarDetails(data);
       });
     }
   }, [id]);
-  return (
+
+  const { car_model, mileage, price, image, km_driven, features, location } =
+    carDetails || {};
+
+  useEffect(() => {
+    if (!isOpen) {
+      ref.current?.snapTo(1);
+    }
+  }, []);
+
+  return !isGeolocationAvailable ? (
+    <div>Your browser does not support Geolocation</div>
+  ) : !isGeolocationEnabled ? (
+    <div>Geolocation is not enabled</div>
+  ) : coords && location ? (
     <Container fluid className="p-0">
       <Row className="g-0">
         <Col xs={12} md={6} className="map-container">
           <MapContainer
             center={{
-              lat: 22.572645,
-              lng: 88.363892,
+              lat: location?._lat,
+              lng: location?._long,
+            }}
+            navigateFrom={{
+              lat: coords?.latitude,
+              lng: coords?.longitude,
             }}
           />
           <div
@@ -78,17 +104,17 @@ function Details() {
                     }}
                   >
                     <h4 className="fw-bold opacity-50 fs-1 text-white ">
-                      BMW X5
+                      {car_model}
                     </h4>
                     <div className="d-flex align-items-center gap-4  text-white opacity-25">
                       <span className="fs-6 d-flex align-items-center justify-content-center gap-2 ">
                         <FaGasPump />
-                        <p className="m-0">5KM/L</p>
+                        <p className="m-0">{mileage} KM/L</p>
                       </span>
                       <span className="fs-6 d-flex align-items-center justify-content-center gap-2 ">
                         <FaLocationArrow />
 
-                        <p className="m-0">>500kms</p>
+                        <p className="m-0">>{km_driven} kms</p>
                       </span>
                     </div>
                   </div>
@@ -104,7 +130,7 @@ function Details() {
                     }}
                   >
                     <img
-                      src="https://pngimg.com/uploads/bmw/bmw_PNG99550.png"
+                      src={image}
                       className="img-fluid"
                       style={{
                         marginTop: "-40px",
@@ -112,36 +138,21 @@ function Details() {
                     />
                     <p className="fw-bold fs-5 ">Features</p>
                     <Row className="g-2">
-                      {[
-                        {
-                          icon: <FaGasPump size={40} />,
-                          text: "Disel",
-                          subText: "Common Rail Fuel Injection",
-                        },
-                        {
-                          icon: <BsSpeedometer size={40} />,
-                          text: "Acceleration",
-                          subText: "0 - 100km / 11s",
-                        },
-                        {
-                          icon: <PiSeat size={40} />,
-                          text: "Cool Seat",
-                          subText: "Temp Control on seat",
-                        },
-                      ].map((item, index) => (
-                        <Col xs={6} md={6} key={index} className="p-2">
-                          <div className="border border-1 p-3  d-flex align-items-center justify-content-center gap-2 flex-column">
-                            {item.icon}
-                            <p className="m-0">{item.text}</p>
-                            <p className="m-0">{item.subText}</p>
-                          </div>
-                        </Col>
-                      ))}
+                      {features &&
+                        features.map((item, index) => (
+                          <Col xs={6} md={6} key={index} className="p-2">
+                            <div className="border border-1 p-3  d-flex align-items-center justify-content-center gap-2 flex-column">
+                              {item?.icon}
+                              <p className="m-0">{item.name}</p>
+                              <p className="m-0">{item.value}</p>
+                            </div>
+                          </Col>
+                        ))}
                     </Row>
 
                     <div className="d-flex align-items-center justify-content-between w-100 mt-3">
                       <p className="m-0 fw-bold fs-4">
-                        Rs. 50000{" "}
+                        Rs. {price}{" "}
                         <span
                           style={{
                             fontSize: "12px",
@@ -325,6 +336,8 @@ function Details() {
         </Col>
       </Row>
     </Container>
+  ) : (
+    <div></div>
   );
 }
 
