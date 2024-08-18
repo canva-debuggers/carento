@@ -1,84 +1,70 @@
-// import React from "react";
-// import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-
-// const containerStyle = {
-//   width: "100%",
-//   height: "100%",
-// };
-
-// function MapContainer({ center }) {
-//   const { isLoaded } = useJsApiLoader({
-//     id: "google-map-script",
-//     googleMapsApiKey: "AIzaSyCrkT383kr0odCNYNvNULUcWn9B_wmOIYE",
-//   });
-
-//   const [map, setMap] = React.useState(null);
-
-//   const onLoad = React.useCallback(function callback(map) {
-//     const bounds = new window.google.maps.LatLngBounds(center);
-//     map.fitBounds(bounds);
-//     map.setZoom(5);
-//     map.panTo(center);
-
-//     setMap(map);
-//   }, []);
-
-//   const onUnmount = React.useCallback(function callback(map) {
-//     setMap(null);
-//   }, []);
-
-//   return isLoaded ? (
-//     <GoogleMap
-//       mapContainerStyle={containerStyle}
-//       center={center}
-//       zoom={10}
-//       onLoad={onLoad}
-//       onUnmount={onUnmount}
-//       options={{
-//         disableDefaultUI: true,
-//         styles: mapStyles,
-//       }}
-//     >
-//       {/* Child components, such as markers, info windows, etc. */}
-//       <></>
-//     </GoogleMap>
-//   ) : (
-//     <></>
-//   );
-// }
-
-// export default MapContainer;
-
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   AdvancedMarker,
   APIProvider,
   Map,
   Marker,
   Pin,
+  useMap,
+  useMapsLibrary,
 } from "@vis.gl/react-google-maps";
 import { mapStyles } from "./mapStyles";
 import pin from "../assets/pin.png";
+import carPin from "../assets/carPin.png";
 
-function MapContainer({ center }) {
+function MapContainer({ center, zoom, markersLocations = [] }) {
+  const map = useMap();
+  const [loaded, setLoaded] = useState(false);
+
+  const fitBounds = useCallback(() => {
+    if (map && markersLocations.length) {
+      const bounds = map?.getBounds();
+      if (!bounds) return;
+      markersLocations.forEach((marker) => bounds?.extend(marker));
+      bounds?.extend(center); // Include the center point in the bounds
+      map?.fitBounds(bounds);
+    }
+  }, [markersLocations, map, center]);
+
+  useEffect(() => {
+    fitBounds();
+  }, [markersLocations, map, loaded]);
+  useEffect(() => {
+    fitBounds();
+  }, []);
+
+  useEffect(() => {
+    if (map) {
+      map.addListener("tilesloaded", () => {
+        setLoaded(true);
+      });
+    }
+  }, [map]);
+
   return (
-    <APIProvider apiKey={"AIzaSyCrkT383kr0odCNYNvNULUcWn9B_wmOIYE"}>
-      <Map
-        defaultCenter={center}
-        defaultZoom={15}
-        styles={mapStyles}
-        scaleControl={false}
-        zoomControl={false}
-        controlled={false}
-        scaleControlOptions={false}
-        streetViewControl={false}
-        fullscreenControl={false}
-        mapTypeControl={false}
-        // mapId={"3b9b3d5b0f9d5f0a"}
-      >
-        <Marker position={center} icon={pin} animation={"BOUNCE"} />
-      </Map>
-    </APIProvider>
+    <Map
+      defaultCenter={center}
+      defaultZoom={zoom || 15}
+      styles={mapStyles}
+      scaleControl={false}
+      zoomControl={false}
+      streetViewControl={false}
+      fullscreenControl={false}
+      mapTypeControl={false}
+    >
+      <Marker position={center} icon={pin} animation={"BOUNCE"} />
+      {markersLocations.map((marker, index) => (
+        <Marker
+          key={index}
+          position={marker}
+          icon={carPin}
+          clickable={true}
+          onClick={() => {
+            map.panTo(marker);
+          }}
+        />
+      ))}
+    </Map>
   );
 }
 

@@ -5,7 +5,7 @@ import BottomNavigation from "../components/BottomNavigation";
 function DefaultLayout() {
   return (
     <div>
-      <div className="pb-5">
+      <div className="mb-5">
         <Outlet />
       </div>
       <BottomNavigation />
