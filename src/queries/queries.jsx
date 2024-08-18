@@ -5,6 +5,7 @@ import "firebase/compat/storage";
 
 import * as geofirestore from "geofirestore";
 import { GeoPoint } from "firebase/firestore";
+import "firebase/compat/storage";
 
 // Add this function to initialize Firebase
 export const initializeFirebase = (config) => {
@@ -126,7 +127,7 @@ export async function storeJsonInCollection(collectionName, jsonData, docName) {
 
     let docRef;
     if (docName) {
-      await collectionRef.set(jsonData);
+      await collectionRef.set(jsonData, { merge: true });
       docRef = collectionRef;
     } else {
       docRef = await collectionRef.add(jsonData);
@@ -229,10 +230,10 @@ export async function getDataFromCollectionaddGeo(collectionName, jsonData) {
   }
 }
 
-export async function uploadDocumentFirebase(file, userId) {
+export async function uploadDocumentFirebase(file, userId, keyName) {
   try {
     const storage = firebase.storage();
-    const storageRef = storage.ref(`driving_license/${userId}`);
+    const storageRef = storage.ref(`${keyName}/${userId}`);
 
     const snapshot = await storageRef.put(file);
     const downloadURL = await snapshot.ref.getDownloadURL();
