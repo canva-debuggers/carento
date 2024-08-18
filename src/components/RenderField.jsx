@@ -1,5 +1,9 @@
 import React, { memo } from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
+import GooglePlacesAutocomplete, {
+  geocodeByPlaceId,
+  getLatLng,
+} from "react-google-places-autocomplete";
 import Select from "react-select";
 
 function RenderField({
@@ -161,6 +165,32 @@ function RenderField({
             {getNestedValue(errors, field_name)}
           </Form.Control.Feedback>
         </FloatingLabel>
+      );
+    case "googleAutocomplete":
+      return (
+        <GooglePlacesAutocomplete
+          apiKey="AIzaSyCrkT383kr0odCNYNvNULUcWn9B_wmOIYE"
+          componentRestrictions={{ country: "in" }}
+          debounce={300}
+          selectProps={{
+            //   value: locationFilterValue,
+            value: "",
+            onChange: (selctedAddress) => {
+              if (
+                selctedAddress &&
+                selctedAddress.value &&
+                selctedAddress.value.place_id
+              ) {
+                geocodeByPlaceId(selctedAddress.value.place_id)
+                  .then((results) => getLatLng(results[0]))
+                  .then((latLng) => {
+                    handleChange(latLng);
+                  })
+                  .catch((error) => console.error(error));
+              }
+            },
+          }}
+        />
       );
     default:
       return (

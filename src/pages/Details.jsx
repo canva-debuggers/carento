@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { getDataFromCollection } from "../queries/queries";
 import { useGeolocated } from "react-geolocated";
+import BookingModal from "../components/BookingModal";
 
 function Details() {
   const [carDetails, setCarDetails] = useState({});
@@ -165,9 +166,11 @@ function Details() {
                     <div className="d-flex align-items-center justify-content-center w-100 mt-3">
                       <ButtonGroup>
                         <Button variant="outline-dark" size="lg">
+                          <BookingModal show={true} selfDrive={true} />
                           Rent Car
                         </Button>
                         <Button variant="dark" size="md">
+                          <BookingModal show={true} selfDrive={false} />
                           Rent with chauffeur
                         </Button>
                       </ButtonGroup>
