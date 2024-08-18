@@ -1,8 +1,11 @@
 import React from "react";
 
-function CategoryCard({ name, icon }) {
+function CategoryCard({ name, icon, onClick }) {
   return (
-    <div className="d-flex flex-column align-items-center justify-content-center">
+    <div
+      className="d-flex flex-column align-items-center justify-content-center"
+      onClick={onClick}
+    >
       <div
         className="bg-light rounded-circle d-flex align-items-center justify-content-center"
         style={{
