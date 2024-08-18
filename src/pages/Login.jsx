@@ -142,6 +142,25 @@ function Login() {
                     Let's Go
                   </span>
                 </Button>
+                <Button
+                  type="button"
+                  style={{
+                    width: "20rem",
+                    borderRadius: "40px",
+                    height: "3rem",
+                    fontWeight: "bold",
+                    background: "#fff",
+                    marginTop: "1rem",
+                  }}
+                >
+                  <span
+                    style={{ color: "#000" }}
+                    className="fs-6"
+                    onClick={loginWithGoogle}
+                  >
+                    Log in with google
+                  </span>
+                </Button>
                 <div
                   style={{ color: "#fff" }}
                   className="fs-6 text-center"
@@ -209,25 +228,7 @@ function Login() {
                     Let's Go
                   </span>
                 </Button>
-                <Button
-                  type="button"
-                  style={{
-                    width: "20rem",
-                    borderRadius: "40px",
-                    height: "3rem",
-                    fontWeight: "bold",
-                    background: "#fff",
-                    marginTop: "1rem",
-                  }}
-                >
-                  <span
-                    style={{ color: "#000" }}
-                    className="fs-6"
-                    onClick={loginWithGoogle}
-                  >
-                    Log in with google
-                  </span>
-                </Button>
+
                 <div
                   style={{ color: "#fff" }}
                   className="fs-6 text-center"
